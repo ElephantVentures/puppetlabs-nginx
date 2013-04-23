@@ -50,18 +50,23 @@
 define nginx::resource::location(
   $ensure               = present,
   $vhost                = undef,
-  $www_root             = undef,
-  $index_files          = ['index.html', 'index.htm', 'index.php'],
+  $modifier             = false,
+  $www_root             = false,
+  $index_files          = false,
   $proxy                = undef,
   $proxy_read_timeout   = $nginx::params::nx_proxy_read_timeout,
   $ssl                  = false,
   $ssl_only		= false,
-  $location_alias       = undef,
+  $location_alias       = false,
   $option               = undef,
   $stub_status          = undef,
   $location_cfg_prepend = undef,
   $location_cfg_append  = undef,
-  $try_files            = undef,
+  $try_files            = false,
+  $fastcgi_split_path_info = false,
+  $fastcgi_params       = false,
+  $fastcgi_pass         = false,
+  $includes             = false,
   $location
 ) {
   File {
@@ -80,7 +85,7 @@ define nginx::resource::location(
   # Use proxy template if $proxy is defined, otherwise use directory template.
   if ($proxy != undef) {
     $content_real = template('nginx/vhost/vhost_location_proxy.erb')
-  } elsif ($location_alias != undef) {
+  } elsif $location_alias {
     $content_real = template('nginx/vhost/vhost_location_alias.erb')
   } elsif ($stub_status != undef) {
     $content_real = template('nginx/vhost/vhost_location_stub_status.erb')
@@ -91,9 +96,6 @@ define nginx::resource::location(
   ## Check for various error condtiions
   if ($vhost == undef) {
     fail('Cannot create a location reference without attaching to a virtual host')
-  }
-  if (($www_root == undef) and ($proxy == undef) and ($location_alias == undef) and ($stub_status == undef) ) {
-    fail('Cannot create a location reference without a www_root, proxy, location_alias or stub_status defined')
   }
   if (($www_root != undef) and ($proxy != undef)) {
     fail('Cannot define both directory and proxy in a virtual host')

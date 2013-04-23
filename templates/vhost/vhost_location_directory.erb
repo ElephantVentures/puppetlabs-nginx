@@ -1,13 +1,28 @@
-  location <%= location %> {
-<% if @location_cfg_prepend -%><% location_cfg_prepend.each do |key,value| -%>
-    <%= key %> <%= value %>;
-<% end -%><% end -%>
-    root  <%= www_root %>;
-    <% if try_files.respond_to? :each then %>
-    try_files <% try_files.each do |try| -%> <%= try %> <% end -%>;
-    <% end %>
+  location <% if modifier %><%= modifier %> <% end -%><%= location %> {
+<% if @location_cfg_prepend then location_cfg_prepend.each do |key, value| -%>
+    <%= key %> <%= value %>;<% end -%><% end -%><% if www_root %>
+    root <%= www_root %>;<% end -%>
+<% if location_alias %>
+    alias <%= www_root %>;<% end -%>
+<% if try_files.respond_to? :each then %>
+    try_files <% try_files.each do |try| -%><%= try %> <% end -%>;
+<% elsif try_files %>
+    try_files <%= try_files %>; <% end %>
+<% if index_files.respond_to? :each then %>
     index <% index_files.each do |i| %> <%= i %> <% end %>; 
-<% if @location_cfg_append -%><% location_cfg_append.each do |key,value| -%>
-    <%= key %> <%= value %>;
-<% end -%><% end -%>
+<% elsif index_files %>
+    index <%= index_files %>; <% end %>
+<% if fastcgi_split_path_info %>
+    fastcgi_split_path_info <%= fastcgi_split_path_info %>; <% end %>
+<% if fastcgi_params.respond_to? :each then fastcgi_params.each do |key, value|%>
+    fastcgi_param <%= key %> <%= value %><% end %>; <% end %>
+<% if fastcgi_pass %>
+    fastcgi_pass <%= fastcgi_pass %>; <% end %>
+<% if includes.respond_to? :each then includes.each do |i| %>
+    include <%= i %><% end %>; 
+<% elsif includes %>
+    include <%= includes %>; <% end %> 
+
+<% if @location_cfg_append -%><% location_cfg_append.each do |key, value| -%>
+    <%= key %> <%= value %>; <% end -%><% end -%>
   }
