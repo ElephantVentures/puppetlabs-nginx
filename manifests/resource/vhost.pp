@@ -54,7 +54,7 @@ define nginx::resource::vhost(
   $ssl_port		  = '443',
   $proxy                  = undef,
   $proxy_read_timeout     = $nginx::params::nx_proxy_read_timeout,
-  $index_files            = ['index.html', 'index.htm', 'index.php'],
+  $index_files            = undef,
   $server_name            = [$name],
   $www_root               = undef,
   $rewrite_www_to_non_www = false,
