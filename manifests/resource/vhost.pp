@@ -60,7 +60,9 @@ define nginx::resource::vhost(
   $rewrite_www_to_non_www = false,
   $location_cfg_prepend   = undef,
   $location_cfg_append    = undef,
-  $try_files              = undef
+  $auth_basic             = "Project",
+  $auth_basic_user_file   = undef,
+  $try_files              = undef,
 ) {
 
   File {
@@ -109,6 +111,8 @@ define nginx::resource::vhost(
     proxy                => $proxy,
     proxy_read_timeout   => $proxy_read_timeout,
     try_files            => $try_files,
+    auth_basic           => $auth_basic,
+    auth_basic_user_file => $auth_basic_user_file,
     www_root             => $www_root,
     notify               => Class['nginx::service'],
   }
