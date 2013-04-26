@@ -7,22 +7,24 @@
 <% if try_files.respond_to? :each then %>
     try_files <% try_files.each do |try| -%><%= try %> <% end -%>;
 <% elsif try_files %>
-    try_files <%= try_files %>; <% end %>
+    try_files <%= try_files %>;<% end %>
 <% if index_files.respond_to? :each then %>
-    index <% index_files.each do |i| %> <%= i %> <% end %>; 
+    index <% index_files.each do |i| %><%= i %> <% end %>; 
 <% elsif index_files %>
-    index <%= index_files %>; <% end %>
+    index <%= index_files %>;<% end %>
 <% if fastcgi_split_path_info %>
-    fastcgi_split_path_info <%= fastcgi_split_path_info %>; <% end %>
+    fastcgi_split_path_info <%= fastcgi_split_path_info %>;<% end %>
 <% if fastcgi_params.respond_to? :each then fastcgi_params.each do |key, value|%>
-    fastcgi_param <%= key %> <%= value %><% end %>; <% end %>
+    fastcgi_param <%= key %> <%= value %>;<% end %> <% end %>
 <% if fastcgi_pass %>
-    fastcgi_pass <%= fastcgi_pass %>; <% end %>
+    fastcgi_pass <%= fastcgi_pass %>;<% end %>
 <% if includes.respond_to? :each then includes.each do |i| %>
-    include <%= i %><% end %>; 
+    include <%= i %>;<% end %> 
 <% elsif includes %>
-    include <%= includes %>; <% end %> 
-
+    include <%= includes %>;<% end %> 
+<% if auth_basic_user_file %>
+    auth_basic "<%= auth_basic %>";
+    auth_basic_user_file <%= auth_basic_user_file %>;<% end %>
 <% if @location_cfg_append -%><% location_cfg_append.each do |key, value| -%>
-    <%= key %> <%= value %>; <% end -%><% end -%>
+    <%= key %> <%= value %>;<% end -%><% end -%>
   }
