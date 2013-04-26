@@ -61,7 +61,7 @@ define nginx::resource::vhost(
   $location_cfg_prepend   = undef,
   $location_cfg_append    = undef,
   $auth_basic             = "Project",
-  $auth_basic_user_file   = undef,
+  $auth_basic_user_file   = false,
   $try_files              = undef,
 ) {
 
