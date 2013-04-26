@@ -66,6 +66,8 @@ define nginx::resource::location(
   $fastcgi_split_path_info = false,
   $fastcgi_params       = false,
   $fastcgi_pass         = false,
+  $auth_basic           = "Project",
+  $auth_basic_user_file = undef,
   $includes             = false,
   $location
 ) {
